@@ -28,7 +28,7 @@ namespace CSCI3321_ASPNET_FinalProject
             // 2. Create a SqlCommand object using the above connection object
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "Your SQL statements go there";
+            cmd.CommandText = "SELECT * FROM Books inner join Authors on Books.AuthorID = Authors.AuthorID inner join Publishers on Books.PublisherID = Publishers.PublisherID inner join Genres on Books.GenreID = Genres.GenreID";
 
             // 3. Open the connection and execute the command
             // store the returned data in a SqlDataReader object
@@ -40,8 +40,37 @@ namespace CSCI3321_ASPNET_FinalProject
             if (reader.HasRows)
             {
                 // Build the table 
-            }
+                while (reader.Read())
+                {
+                    TableRow tr = new TableRow();
+                    TableCell tc = new TableCell();
+                    tc.Text = reader["Title"].ToString();
+                    tr.Cells.Add(tc);
 
+                    tc = new TableCell();
+                    tc.Text = reader["LastName"].ToString() + ", " + reader["FirstName"].ToString();
+                    tr.Cells.Add(tc);
+
+                    tc = new TableCell();
+                    tc.Text = reader["Price"].ToString();
+                    tr.Cells.Add(tc);
+
+                    tc = new TableCell();
+                    tc.Text = reader["PublishDate"].ToString();
+                    tr.Cells.Add(tc);
+
+                    tc = new TableCell();
+                    tc.Text = reader["PublisherName"].ToString();
+                    tr.Cells.Add(tc);
+
+                    tc = new TableCell();
+                    tc.Text = reader["GenreName"].ToString();
+                    tr.Cells.Add(tc);
+
+                    tblBooks.Rows.Add(tr);
+                }
+            }
+            conn.Close();
         }
     }
 }
